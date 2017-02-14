@@ -1,0 +1,3 @@
+mariadb_repo: "deb [arch=amd64,i386,ppc64el] http://mariadb.kisiek.net/repo/10.1/ubuntu xenial main"
+mariadb_key: "keyserver.ubuntu.com"
+mariadb_key_id: "0xF1656F24C74CD1D8"

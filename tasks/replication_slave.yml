@@ -1,0 +1,31 @@
+---
+- name: Get master data
+  mysql_replication:
+    mode: getmaster
+  delegate_to: "{{ mysql_replication_master }}"
+  register: mysql_replication_status
+  when: mysql_replication_master is defined
+
+- name: Get slave data
+  mysql_replication:
+    mode: getslave
+  register: mysql_slave_status
+
+- name: Stop slave
+  mysql_replication:
+    mode: stopslave
+
+- name: Set master
+  mysql_replication:
+    mode: changemaster
+    master_host: "{{ mysql_replication_master_host }}"
+    master_log_file: "{{ mysql_replication_status.File }}"
+    master_log_pos: "{{ mysql_replication_status.Position }}"
+    master_user: "{{ mysql_replication_user }}"
+    master_password: "{{ lookup('password', 'configs/' + mysql_replication_master + '/replication_password', length=64 ) }}"
+  when:
+    - not mysql_slave_status.Is_Slave or mysql_slave_status.Master_Host != mysql_replication_master_host
+
+- name: Start slave
+  mysql_replication:
+    mode: startslave

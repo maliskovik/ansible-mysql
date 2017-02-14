@@ -1,0 +1,31 @@
+---
+
+- name: Create replication user
+  mysql_user:
+    name: "{{ mysql_replication_user }}"
+    state: present
+    host: '%'
+    priv: "*.*:REPLICATION SLAVE"
+    update_password: on_create
+    password: "{{ lookup('password', 'configs/' + inventory_hostname + '/replication_password', length=64 ) }}"
+
+- name: Allow mysql port on firewall
+  ufw:
+    proto: tcp
+    rule: allow
+    to_port: 3306
+
+- name: Get master data
+  mysql_replication:
+    mode: getslave
+  register: mysql_master_status
+
+- name: Stop slave status
+  mysql_replication:
+    mode: stopslave
+  when: mysql_master_status.Is_Slave
+
+- name: Reset slave status
+  mysql_replication:
+    mode: resetslaveall
+  when: mysql_master_status.Is_Slave

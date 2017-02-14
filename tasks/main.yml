@@ -1,0 +1,15 @@
+---
+#Main mysql tasks file
+
+- name: Install dependencies
+  apt:
+    name: python-mysqldb
+    state: present
+
+- include: mariadb.yml
+
+- include: replication_master.yml
+  when: mysql_replication and mysql_replication_role == "Master"
+
+- include: replication_slave.yml
+  when: mysql_replication and mysql_replication_role == "Slave"

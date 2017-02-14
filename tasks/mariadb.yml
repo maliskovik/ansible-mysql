@@ -1,0 +1,30 @@
+---
+#Mariadb tasks
+
+- name: Add mariadb repo key
+  apt_key:
+    keyserver: "{{ mariadb_key }}"
+    id: "{{ mariadb_key_id }}"
+    state: present
+
+- name: Add mariadb repo
+  apt_repository:
+    repo: "{{ mariadb_repo }}"
+    state: present
+    mode: 0644
+
+- name: Install mariadb
+  apt:
+    name: mariadb-server
+    state: latest
+    force: yes
+
+- name: Configure mariadb
+  template:
+    src: "mysql_config"
+    dest: /etc/mysql/my.cnf
+    owner: root
+    group: root
+    mode: 0644
+  notify: Restart mysql
+- meta: flush_handlers
