@@ -1,4 +1,4 @@
 ---
 # Mysql role dependencies
 dependencies:
-  - role: ssl
+  - role: tls
