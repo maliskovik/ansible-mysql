@@ -3,3 +3,4 @@ mysql_bind_address: 127.0.0.1
 mysql_server_id: 1
 mysql_log_basename: master001
 mysql_replication: false
+mysql_character_set: utf8
