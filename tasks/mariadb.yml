@@ -3,7 +3,7 @@
 
 - name: Add mariadb repo key
   apt_key:
-    keyserver: "{{ mariadb_key }}"
+    keyserver: "{{ mariadb_key_server }}"
     id: "{{ mariadb_key_id }}"
     state: present
 

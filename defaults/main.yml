@@ -4,3 +4,7 @@ mysql_server_id: 1
 mysql_log_basename: master001
 mysql_replication: false
 mysql_character_set: utf8
+mysql_max_allowed_packet: "32M"
+mysql_key_buffer_size: 16M
+mysql_query_cache_limit: 1M
+mysql_query_cache_size: 16M

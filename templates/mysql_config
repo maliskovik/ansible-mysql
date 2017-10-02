@@ -1,7 +1,7 @@
 [client]
 port                    = 3306
 socket                  = /var/run/mysqld/mysqld.sock
-default-character-set   = utf8mb4
+default-character-set   = {{ mysql_character_set }}
 
 [mysqld_safe]
 socket                  = /var/run/mysqld/mysqld.sock
@@ -19,26 +19,31 @@ lc-messages-dir         = /usr/share/mysql
 skip-external-locking
 character-set-server    = {{ mysql_character_set }}
 bind-address            = {{ mysql_bind_address }}
-key_buffer_size         = 16M
-max_allowed_packet      = 16M
+key_buffer_size         = {{ mysql_key_buffer_size }}
+max_allowed_packet      = {{ mysql_max_allowed_packet }}
 thread_stack            = 192K
 thread_cache_size       = 8
 myisam-recover-options  = BACKUP
-query_cache_limit       = 1M
-query_cache_size        = 16M
+query_cache_limit       = {{ mysql_query_cache_limit }}
+query_cache_size        = {{ mysql_query_cache_size }}
 log_error               = /var/log/mysql/error.log
 expire_logs_days        = 10
-max_binlog_size         = 100M
+max_binlog_size         = 2G
 secure_file_priv        = /tmp
+innodb_log_file_size    = 20G
+{% if mysql_replicate_database is defined %}
+replicate-wild-do-table = {{ mysql_replicate_database }}.%
+{% endif %}
 {% if mysql_ssl is defined %}
-
-ssl-ca                  = {{ mysql_ssl_ca }}
+{# SSL Config: #}
+ssl}-ca                  = {{ mysql_ssl_ca }}
 ssl-cert                = {{ mysql_ssl_cert }}
 ssl-key                 = {{ mysql_ssl_key }}
-
 {% endif %}
-
+{# END SSL Config #}
+# Replication config:
 {% if mysql_replication == true %}
+{{ mysql_replicate_database|default(omit) }}.%
 [mariadb]
 {% if mysql_replication_role == "Master" %}
 log-bin
