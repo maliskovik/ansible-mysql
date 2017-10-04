@@ -43,7 +43,6 @@ ssl-key                 = {{ mysql_ssl_key }}
 {# END SSL Config #}
 # Replication config:
 {% if mysql_replication == true %}
-{{ mysql_replicate_database|default(omit) }}.%
 [mariadb]
 {% if mysql_replication_role == "Master" %}
 log-bin
