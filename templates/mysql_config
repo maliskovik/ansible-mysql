@@ -36,7 +36,7 @@ replicate-wild-do-table = {{ mysql_replicate_database }}.%
 {% endif %}
 {% if mysql_ssl is defined %}
 {# SSL Config: #}
-ssl}-ca                  = {{ mysql_ssl_ca }}
+ssl-ca                  = {{ mysql_ssl_ca }}
 ssl-cert                = {{ mysql_ssl_cert }}
 ssl-key                 = {{ mysql_ssl_key }}
 {% endif %}
