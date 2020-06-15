@@ -30,7 +30,7 @@ log_error               = /var/log/mysql/error.log
 expire_logs_days        = 10
 max_binlog_size         = 2G
 secure_file_priv        = /tmp
-innodb_log_file_size    = 20G
+innodb_log_file_size    = 1G
 {% if mysql_replicate_database is defined %}
 replicate-wild-do-table = {{ mysql_replicate_database }}.%
 {% endif %}
