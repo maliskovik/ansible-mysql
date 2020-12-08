@@ -20,8 +20,18 @@
     - ansible_lsb.major_release|int >= 18
 - include: mariadb.yml
 
+- name: Install PIP dependencies for ubuntu 18.04 and on
+  pip:
+    name: PyMySQL
+    state: present
+  when:
+    - ansible_os_family == "Debian"
+    - ansible_lsb.id == "Ubuntu"
+    - ansible_lsb.major_release|int >= 18
+- include: mariadb.yml
+
 - include: replication_master.yml
   when: mysql_replication and mysql_replication_role == "Master"
 
-# - include: replication_slave.yml
-#   when: mysql_replication and mysql_replication_role == "Slave"
+- include: replication_slave.yml
+  when: mysql_replication and mysql_replication_role == "Slave"

@@ -21,6 +21,7 @@ character-set-server    = {{ mysql_character_set }}
 bind-address            = {{ mysql_bind_address }}
 key_buffer_size         = {{ mysql_key_buffer_size }}
 max_allowed_packet      = {{ mysql_max_allowed_packet }}
+innodb_buffer_pool_size = {{ mysql_innodb_buffer_pool_size|default( [(ansible_memory_mb.real.total*0.5)|int,  "m"]|join) }}
 thread_stack            = 192K
 thread_cache_size       = 8
 myisam-recover-options  = BACKUP
@@ -47,6 +48,7 @@ ssl-key                 = {{ mysql_ssl_key }}
 {% if mysql_replication_role == "Master" %}
 log-bin
 log-basename={{ mysql_log_basename }}
+binlog-format=mixed
 {% endif %}
 server_id={{ mysql_server_id }}
 {% endif %}
