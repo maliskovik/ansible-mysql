@@ -1,11 +1,23 @@
 ---
 #Main mysql tasks file
 
-- name: Install dependencies
+- name: Install dependencies for ubuntu 16.04 and earlier
   apt:
     name: python-mysqldb
     state: present
+  when:
+    - ansible_os_family == "Debian"
+    - ansible_lsb.id == "Ubuntu"
+    - ansible_lsb.major_release|int < 18
 
+- name: Install dependencies for ubuntu 18.04 and on
+  apt:
+    name: python3-mysqldb
+    state: present
+  when:
+    - ansible_os_family == "Debian"
+    - ansible_lsb.id == "Ubuntu"
+    - ansible_lsb.major_release|int >= 18
 - include: mariadb.yml
 
 - include: replication_master.yml
