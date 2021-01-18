@@ -1,0 +1,16 @@
+---
+- name: Install MySQL
+  apt:
+    name: mysql-server
+    state: latest
+    force: yes
+
+- name: Configure MySQL
+  template:
+    src: "mysql_config"
+    dest: /etc/mysql/my.cnf
+    owner: root
+    group: root
+    mode: 0644
+  notify: Restart mysql
+- meta: flush_handlers

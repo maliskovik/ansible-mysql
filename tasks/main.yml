@@ -12,13 +12,13 @@
 
 - name: Install dependencies for ubuntu 18.04 and on
   apt:
-    name: python3-mysqldb
+    name:
+      - python3-mysqldb
     state: present
   when:
     - ansible_os_family == "Debian"
     - ansible_lsb.id == "Ubuntu"
     - ansible_lsb.major_release|int >= 18
-- include: mariadb.yml
 
 - name: Install PIP dependencies for ubuntu 18.04 and on
   pip:
@@ -28,7 +28,14 @@
     - ansible_os_family == "Debian"
     - ansible_lsb.id == "Ubuntu"
     - ansible_lsb.major_release|int >= 18
+
 - include: mariadb.yml
+  when:
+    - mysql_variant == "MariaDB"
+
+- include: mysql.yml
+  when:
+    - mysql_variant == "MySQL"
 
 - include: replication_master.yml
   when: mysql_replication and mysql_replication_role == "Master"
