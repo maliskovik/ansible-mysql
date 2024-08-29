@@ -8,5 +8,5 @@ mysql_max_allowed_packet: "32M"
 mysql_key_buffer_size: 16M
 mysql_query_cache_limit: 1M
 mysql_query_cache_size: 16M
-mariadb_repo: "deb [arch=amd64,arm64,ppc64el] http://mariadb.mirror.liquidtelecom.com/repo/10.5/ubuntu {{ ansible_lsb.codename }} main"
+mariadb_repo: "deb [arch=amd64,arm64,ppc64el] https://mirror.nextlayer.at/mariadb/repo/11.3/ubuntu {{ ansible_lsb.codename }} main"
 mysql_variant: "MariaDB"
