@@ -1,0 +1,64 @@
+[server]
+
+[mysqld]
+datadir=/var/lib/mysql
+socket=/var/lib/mysql/mysql.sock
+log-error=/var/log/mariadb/mariadb.log
+pid-file=/run/mariadb/mariadb.pid
+bind-address            = {{ mysql_bind_address }}
+port                    = {{ mysql_port }}
+character-set-server    = {{ mysql_character_set }}
+key_buffer_size         = {{ mysql_key_buffer_size }}
+max_allowed_packet      = {{ mysql_max_allowed_packet }}
+innodb_buffer_pool_size = {{ mysql_innodb_buffer_pool_size|default( [(ansible_memory_mb.real.total*0.5)|int,  "m"]|join) }}
+{% if mysql_ssl is defined %}
+{% if mysql_ssl == true %}
+{# SSL Config: #}
+ssl-ca                  = {{ mysql_ssl_ca }}
+ssl-cert                = {{ mysql_ssl_cert }}
+ssl-key                 = {{ mysql_ssl_key }}
+{% endif %}
+{% endif %}
+{# END SSL Config #}
+# Replication config:
+{% if mysql_replication == true %}
+{% if mysql_replication_role == "Master" %}
+log-bin
+binlog-format=mixed
+{% endif %}
+server_id={{ mysql_server_id }}
+{% endif %}
+
+
+#
+# * Galera-related settings
+#
+[galera]
+# Mandatory settings
+#wsrep_on=ON
+#wsrep_provider=
+#wsrep_cluster_address=
+#binlog_format=row
+#default_storage_engine=InnoDB
+#innodb_autoinc_lock_mode=2
+#
+# Allow server to accept connections on all interfaces.
+#
+#bind-address=0.0.0.0
+#
+# Optional setting
+#wsrep_slave_threads=1
+#innodb_flush_log_at_trx_commit=0
+
+# this is only for embedded server
+[embedded]
+
+# This group is only read by MariaDB servers, not by MySQL.
+# If you use the same .cnf file for MySQL and MariaDB,
+# you can put MariaDB-only options here
+[mariadb]
+
+# This group is only read by MariaDB-10.5 servers.
+# If you use the same .cnf file for MariaDB of different versions,
+# use this group for options that older servers don't understand
+[mariadb-10.5]

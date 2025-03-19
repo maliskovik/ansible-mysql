@@ -1,0 +1,24 @@
+---
+#Mariadb tasks
+
+- name: Install mariadb - RedHat
+  dnf:
+    name: mariadb-server
+    state: latest
+  when: ansible_os_family == "RedHat"
+
+- name: Configure mariadb
+  template:
+    src: "mariadb-server.cnf"
+    dest: /etc/my.cnf.d/mariadb-server.cnf
+    owner: root
+    group: root
+    mode: 0644
+  notify: Restart mysql
+- meta: flush_handlers
+
+- name: Start mariadb
+  service:
+    name: mariadb
+    state: started
+    enabled: yes

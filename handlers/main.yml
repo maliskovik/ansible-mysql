@@ -6,3 +6,9 @@
     name: mysql
     state: restarted
     enabled: yes
+
+- name: Restart mariadb
+  service:
+    name: mariadb
+    state: restarted
+    enabled: yes

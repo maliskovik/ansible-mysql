@@ -22,12 +22,6 @@
     force: yes
   when: ansible_os_family == "Debian"
 
-- name: Install mariadb - RedHat
-  dnf:
-    name: mariadb-server
-    state: latest
-  when: ansible_os_family == "RedHat"
-
 - name: Configure mariadb
   template:
     src: "mysql_config"
@@ -35,5 +29,11 @@
     owner: root
     group: root
     mode: 0644
-  notify: Restart mysql
+  notify: Restart mysqld
 - meta: flush_handlers
+
+- name: Start mysql
+  service:
+    name: mysql
+    state: started
+    enabled: yes

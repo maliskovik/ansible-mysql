@@ -19,9 +19,15 @@
     - ansible_os_family == "Debian"
     - ansible_lsb.id == "Ubuntu"
 
-- ansible.builtin.include_tasks: mariadb.yml
+- ansible.builtin.include_tasks: mariadb_debian.yml
   when:
     - mysql_variant == "MariaDB"
+    - ansible_os_family == "Debian"
+
+- ansible.builtin.include_tasks: mariadb_redhat.yml
+  when:
+    - mysql_variant == "MariaDB"
+    - ansible_os_family == "RedHat"
 
 - ansible.builtin.include_tasks: mysql.yml
   when:
