@@ -1,23 +1,32 @@
 ---
 #Mariadb tasks
 
-- name: Add mariadb repo key
+- name: Add mariadb repo key - Debian
   apt_key:
     keyserver: "{{ mariadb_key_server }}"
     id: "{{ mariadb_key_id }}"
     state: present
+  when: ansible_os_family == "Debian"
 
-- name: Add mariadb repo
+- name: Add mariadb repo - Debian
   apt_repository:
     repo: "{{ mariadb_repo }}"
     state: present
     mode: 0644
+  when: ansible_os_family == "Debian"
 
-- name: Install mariadb
+- name: Install mariadb - Debian
   apt:
     name: mariadb-server
     state: latest
     force: yes
+  when: ansible_os_family == "Debian"
+
+- name: Install mariadb - RedHat
+  dnf:
+    name: mariadb-server
+    state: latest
+  when: ansible_os_family == "RedHat"
 
 - name: Configure mariadb
   template:

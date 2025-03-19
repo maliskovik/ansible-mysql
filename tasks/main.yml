@@ -1,16 +1,7 @@
 ---
 #Main mysql tasks file
 
-- name: Install dependencies for ubuntu 16.04 and earlier
-  apt:
-    name: python-mysqldb
-    state: present
-  when:
-    - ansible_os_family == "Debian"
-    - ansible_lsb.id == "Ubuntu"
-    - ansible_lsb.major_release|int < 18
-
-- name: Install dependencies for ubuntu 18.04 and on
+- name: Install dependencies for ubuntu
   apt:
     name:
       - python3-mysqldb
@@ -18,9 +9,8 @@
   when:
     - ansible_os_family == "Debian"
     - ansible_lsb.id == "Ubuntu"
-    - ansible_lsb.major_release|int >= 18
 
-- name: Install PIP dependencies for ubuntu 18.04 and on
+- name: Install PIP dependencies
   pip:
     name: PyMySQL
     state: present
@@ -28,18 +18,17 @@
   when:
     - ansible_os_family == "Debian"
     - ansible_lsb.id == "Ubuntu"
-    - ansible_lsb.major_release|int >= 18
 
-- include: mariadb.yml
+- ansible.builtin.include_tasks: mariadb.yml
   when:
     - mysql_variant == "MariaDB"
 
-- include: mysql.yml
+- ansible.builtin.include_tasks: mysql.yml
   when:
     - mysql_variant == "MySQL"
 
-- include: replication_master.yml
+- ansible.builtin.include_tasks: replication_master.yml
   when: mysql_replication and mysql_replication_role == "Master"
 
-- include: replication_slave.yml
+- ansible.builtin.include_tasks: replication_slave.yml
   when: mysql_replication and mysql_replication_role == "Slave"

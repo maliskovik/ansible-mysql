@@ -20,6 +20,7 @@ I recommend using ssl role for this.
 * mysql_ssl_key - path of the ssl key to use
 * mysql_ssl_cert - path of the ssl cert to use
 * mysql_bind_address - Network address to bind to. Default 127.0.0.1
+* mysql_port - Mysql bind port - default 3306
 * mysql_server_id - Mysql server name - must be unique in the replication group.
 * mysql_log_basename - log prefix.
 * mysql_replication - Turn on mysql repplication
