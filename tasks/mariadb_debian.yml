@@ -32,8 +32,12 @@
   notify: Restart mysqld
 - meta: flush_handlers
 
+- name: Set service type
+  set_fact:
+    mysql_service: mysql
+
 - name: Start mysql
   service:
-    name: mysql
+    name: "{{ mysql_service }}"
     state: started
     enabled: yes

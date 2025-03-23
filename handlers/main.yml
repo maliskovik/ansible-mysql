@@ -3,12 +3,6 @@
 
 - name: Restart mysql
   service:
-    name: mysql
-    state: restarted
-    enabled: yes
-
-- name: Restart mariadb
-  service:
-    name: mariadb
+    name: "{{ mysql_service }}"
     state: restarted
     enabled: yes

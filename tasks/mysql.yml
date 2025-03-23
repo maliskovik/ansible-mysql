@@ -14,3 +14,13 @@
     mode: 0644
   notify: Restart mysql
 - meta: flush_handlers
+
+- name: Set service type
+  set_fact:
+    mysql_service: mysql
+
+- name: Start mysql
+  service:
+    name: "{{ mysql_service }}"
+    state: started
+    enabled: yes
